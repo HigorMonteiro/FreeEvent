@@ -1,60 +1,69 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
-fail_fast: true
-
+default_language_version:
+  # force all unspecified python hooks to run python3
+  python: python3.10
+minimum_pre_commit_version: '2.20.0'
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
-    hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-      - id: check-yaml
-      - id: check-added-large-files
-        args: ['--maxkb=5000']
-      - id: check-toml
-  - repo: https://github.com/pycqa/isort
+  # fixers
+  - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
     hooks:
       - id: isort
-        description: 'Verifica padrão das importações'
         name: isort (python)
-        args: ['--profile', 'black', '-c']
-  - repo: https://github.com/pycqa/flake8
-    rev: '6.0.0'
+  - repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: 'v2.0.2'
+    hooks:
+      - id: autopep8
+        args: [
+          '--in-place',
+          '--select',
+          'E101,E112,E113,E115,E116,E117,E121,E122,E123,E124,E125,E126,E127,E128,E129,E131,E133,E201,E202,E203,E211,E221,E222,E223,E224,E225,E226,E227,E228,E231,E231,E241,E242,E251,E252,E261,E262,E265,E271,E272,E273,E274,E275,E301,E302,E303,E304,E305,E306,W391,W504'
+        ]
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v2.4.0
+    hooks:
+      - id: add-trailing-comma
+        exclude: '\/migrations\/'
+        args: ['--py36-plus']
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: double-quote-string-fixer
+        exclude: '\/migrations\/'
+      - id: fix-byte-order-marker
+      - id: end-of-file-fixer
+        types: [python]
+      - id: mixed-line-ending
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.4.0
+    hooks:
+      - id: pyupgrade
+        args: ['--py3-plus', '--py38-plus']
+
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: "1.13.0"  # replace with the latest tag on GitHub
+    hooks:
+    -   id: django-upgrade
+        args: [--target-version, "4.1"]   # Replace with Django version
+  # linters
+  - repo: https://github.com/pre-commit/pre-commit
+    rev: v3.3.1
+    hooks:
+      - id: validate_manifest
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: no-commit-to-branch
+        args: [--branch, main, --branch, master]
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: debug-statements
+      - id: detect-private-key
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
     hooks:
       - id: flake8
-        description: 'Linter de python'
-        exclude: ^migrations/
-  - repo: https://github.com/psf/black
-    rev: 22.10.0
-    hooks:
-      - id: black
-        description: 'Formatação dos arquivos .py padrão black'
-        exclude: migrations|apps|web
-        args: ['--check', "--config", "./pyproject.toml"]
-  - repo: https://github.com/pycqa/bandit
-    rev: 1.7.5
-    hooks:
-      - id: bandit
-        name: bandit
-        exclude: ^tests/ 
-        args:
-          - -r
-          - api
-  - repo: local
-    hooks:
-      - id: pytest
-        name: pytest
-        entry: pytest
-        language: system
-        pass_filenames: false
-        exclude: ˆmigrations/
-        always_run: true
-
-  - repo: https://github.com/compilerla/conventional-pre-commit
-    rev: 'v2.0.0'
-    hooks:
-      - id: conventional-pre-commit
-        description: 'Confere o padrão do commit'
-        stages: [commit-msg]
-        args: [] # optional: list of Conventional Commits types to allow e.g. [feat, fix, ci, chore, test]
+        additional_dependencies:
+          - flake8-bugbear==22.12.6
+          - flake8-no-pep420==2.3.0
+          - flake8-encodings==0.5.0
