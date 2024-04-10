@@ -38,4 +38,3 @@ class UserAdmin(BaseUserAdmin):
         'date_joined',
     ]
     search_fields = ['username', 'name', 'email']
-    filter_horizontal = ['groups', 'user_permissions', 'is_active', 'is_staff']

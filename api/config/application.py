@@ -20,6 +20,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'api.account.apps.AccountConfig',
+    'api.core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
