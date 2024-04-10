@@ -8,19 +8,20 @@ from sentry_sdk.integrations.django import DjangoIntegration
 
 from api.config.application import ENVIRONMENT
 
+
 logger = logging.getLogger(__name__)
 
-USE_SENTRY = config("USE_SENTRY", default="false").lower() == "true"
+USE_SENTRY = config('USE_SENTRY', default='false').lower() == 'true'
 
 if USE_SENTRY:
     import sentry_sdk
 
-    DSN = config("SENTRY_DSN")
+    DSN = config('SENTRY_DSN')
     TRACES_SAMPLE_RATE = float(
-        config("SENTRY_TRACES_SAMPLE_RATE", default="1.0")
+        config('SENTRY_TRACES_SAMPLE_RATE', default='1.0'),
     )
     PROFILE_SAMPLE_RATE = float(
-        config("SENTRY_PROFILE_SAMPLE_RATE", default="1.0"),
+        config('SENTRY_PROFILE_SAMPLE_RATE', default='1.0'),
     )
 
     sentry_sdk.init(
@@ -35,6 +36,6 @@ if USE_SENTRY:
         send_default_pii=True,
     )
 
-    logger.info("Sentry is initialized")
+    logger.info('Sentry is initialized')
 else:
-    logger.info("Sentry is not initialized")
+    logger.info('Sentry is not initialized')

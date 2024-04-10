@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import cast
 
-from django.urls import URLResolver, path
+from django.urls import path, URLResolver
 from rest_framework.routers import SimpleRouter
 from rest_framework.viewsets import GenericViewSet, ViewSet
 
@@ -12,7 +12,7 @@ from rest_framework.viewsets import GenericViewSet, ViewSet
 class CustomViewRouter:
     """Router for APIView and ViewSet."""
 
-    url_prefix: str = ""
+    url_prefix: str = ''
 
     _drf_router: SimpleRouter = field(default_factory=SimpleRouter)
     _paths: list[URLResolver] = field(default_factory=list)
@@ -25,17 +25,17 @@ class CustomViewRouter:
         as_view_kwargs=None,
         **kwargs,
     ):
-        route = f"{self.url_prefix}{route}"
+        route = f'{self.url_prefix}{route}'
 
         def decorator(view):
             if issubclass(view, (ViewSet, GenericViewSet)):
-                kwargs.setdefault("basename", basename or name)
+                kwargs.setdefault('basename', basename or name)
                 self._drf_router.register(route, view, **kwargs)
             else:
-                kwargs.setdefault("name", name or basename)
+                kwargs.setdefault('name', name or basename)
                 self._paths.append(
                     path(
-                        route, view.as_view(**(as_view_kwargs or {})), **kwargs
+                        route, view.as_view(**(as_view_kwargs or {})), **kwargs,
                     ),
                 )
 

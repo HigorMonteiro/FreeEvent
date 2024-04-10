@@ -12,45 +12,46 @@ from drf_spectacular.utils import extend_schema
 
 from api.config.storage import USE_S3_FOR_MEDIA, USE_S3_FOR_STATIC
 
+
 logger = logging.getLogger(__name__)
 
 _swagger_urlpatterns = [
     path(
-        "api/v1/schema/",
+        'api/v1/schema/',
         extend_schema(exclude=True)(views.SpectacularAPIView).as_view(),
-        name="schema",
+        name='schema',
     ),
     path(
-        "docs/",
+        'docs/',
         extend_schema(exclude=True)(views.SpectacularSwaggerView).as_view(
-            url_name="schema"
+            url_name='schema',
         ),
-        name="swagger-ui",
+        name='swagger-ui',
     ),
     path(
-        "redoc/",
+        'redoc/',
         extend_schema(exclude=True)(views.SpectacularRedocView).as_view(
-            url_name="schema"
+            url_name='schema',
         ),
-        name="redoc",
+        name='redoc',
     ),
 ]
 
 urlpatterns = [
     *_swagger_urlpatterns,
-    path("", lambda _request: redirect("docs/"), name="home"),
-    path("admin/", admin.site.urls),
+    path('', lambda _request: redirect('docs/'), name='home'),
+    path('admin/', admin.site.urls),
 ]
 
 if not USE_S3_FOR_STATIC:
     urlpatterns += static(
-        settings.STATIC_URL, document_root=settings.STATIC_ROOT
+        settings.STATIC_URL, document_root=settings.STATIC_ROOT,
     )
 
 if not USE_S3_FOR_MEDIA:
     logger.warning(
-        "S3 is disabled, serving media files locally. Consider using S3."
+        'S3 is disabled, serving media files locally. Consider using S3.',
     )
     urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT,
     )
