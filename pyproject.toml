@@ -18,6 +18,22 @@ exclude = '''
 )/
 '''
 
+[tool.flake8]
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | migrations
+)/
+'''
+
 [tool.ruff.isort]
 required-imports = ["from __future__ import annotations"]
 
