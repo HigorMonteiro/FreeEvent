@@ -21,6 +21,9 @@ permissions:
 env:
   POSTGRES_EXTERNAL_HOST: 127.0.0.1
   POSTGRES_EXTERNAL_PORT: 5432
+  DEBUG: True
+  LANGUAGE_CODE: en-us
+  TIME_ZONE: Europe/Berlin
   # valid for external use
   POSTGRES_DB: postgres
   POSTGRES_USER: postgres
