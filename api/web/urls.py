@@ -10,7 +10,7 @@ from django.urls import path
 from drf_spectacular import views
 from drf_spectacular.utils import extend_schema
 
-from api.settings.storage import USE_S3_FOR_MEDIA, USE_S3_FOR_STATIC
+from api.config.storage import USE_S3_FOR_MEDIA, USE_S3_FOR_STATIC
 
 logger = logging.getLogger(__name__)
 

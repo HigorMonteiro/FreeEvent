@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from api import __version__
-from api.settings.application import PROJECT_VERBOSE_NAME
+from api.config.application import PROJECT_VERBOSE_NAME
 
 SPECTACULAR_SETTINGS = {
     "TITLE": PROJECT_VERBOSE_NAME,

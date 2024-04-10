@@ -6,7 +6,7 @@ from typing import Any, cast
 from decouple import config
 from storages.backends.s3 import S3Storage
 
-from api.settings.base import BASE_DIR
+from api.config.base import BASE_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -38,7 +38,7 @@ if config("AWS_STORAGE_BUCKET_NAME", default=None):
     AWS_S3_SECRET_ACCESS_KEY = config("AWS_S3_SECRET_ACCESS_KEY", "secret_key")
 
     AWS_S3_CONFIG = {
-        "BACKEND": "api.settings.storage.CustomDomainS3Storage",
+        "BACKEND": "api.config.storage.CustomDomainS3Storage",
         "OPTIONS": {
             "bucket_name": AWS_STORAGE_BUCKET_NAME,
             "access_key": AWS_S3_ACCESS_KEY_ID,
