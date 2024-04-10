@@ -14,7 +14,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         unique=True,
         validators=[
             validators.RegexValidator(
-                re.compile("^[\w.@+-]+$"),
+                re.compile("^[\w.@+-]+$"), # noqa W605
                 "Informe um nome de usuário válido. "
                 "Este valor deve conter apenas letras, números "
                 "e os caracteres: @/./+/-/_ .",

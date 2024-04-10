@@ -48,6 +48,7 @@ repos:
         entry: pytest
         language: system
         pass_filenames: false
+        exclude: ˆmigrations/
         always_run: true
 
   - repo: https://github.com/compilerla/conventional-pre-commit

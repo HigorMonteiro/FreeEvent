@@ -18,7 +18,7 @@ def test_user_creation():
     assert user.username == username
     assert user.email == email
     assert user.name == name
-    assert user.is_staff == False
-    assert user.is_active == True
+    assert user.is_staff is False
+    assert user.is_active is True
     assert user.get_full_name() == name
     assert user.get_short_name() == "Test"
