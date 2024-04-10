@@ -36,6 +36,7 @@ class UserAdmin(BaseUserAdmin):
         "is_staff",
         "date_joined",
     ]
-
+    search_fields = ["username", "name", "email"]
+    filter_horizontal = ["groups", "user_permissions", "is_active", "is_staff"]
 
 admin.site.register(User, UserAdmin)
