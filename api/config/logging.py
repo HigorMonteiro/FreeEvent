@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import logging.config
 
+from decouple import config as _config
 
-LOG_LEVEL = 'INFO'
+
+LOG_LEVEL = _config('LOG_LEVEL', default='INFO')
 FORMAT = '%(asctime)s %(log_color)s%(levelname)s %(name)s %(message)s'
 LOGGING = {
     'version': 1,

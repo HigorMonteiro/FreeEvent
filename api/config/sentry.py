@@ -11,7 +11,7 @@ from api.config.application import ENVIRONMENT
 
 logger = logging.getLogger(__name__)
 
-USE_SENTRY = config('USE_SENTRY', default='false').lower() == 'true'
+USE_SENTRY = None
 
 if USE_SENTRY:
     import sentry_sdk

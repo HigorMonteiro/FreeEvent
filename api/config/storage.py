@@ -27,7 +27,8 @@ STORAGES = {
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = 'media/'
-if config('AWS_STORAGE_BUCKET_NAME', default=None):
+
+if not bool(config('DJANGO_DEBUG')):
     AWS_STORAGE_BUCKET_NAME = config('AWS_STORAGE_BUCKET_NAME', 'bucket')
     AWS_S3_CUSTOM_DOMAIN = config(
         'AWS_S3_CUSTOM_DOMAIN',

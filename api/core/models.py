@@ -2,8 +2,11 @@ import uuid
 from enum import Enum
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from api.account.models import User
+from api.tasks.app import notify_participants_async
 
 
 class CoreModel(models.Model):
@@ -81,3 +84,8 @@ class Event(CoreModel):
 
     def __str__(self):
         return self.title
+
+
+@receiver(post_save, sender=Event)
+def trigger_notify_participants(sender, instance, **kwargs):
+    notify_participants_async.delay(str(instance.id))

@@ -55,9 +55,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.web.wsgi.application'
 
-LANGUAGE_CODE = config('LANGUAGE_CODE', 'en-us')
+LANGUAGE_CODE = config('LANGUAGE_CODE', 'pt-br')
 
 USE_TZ = True
-TIME_ZONE = config('TIME_ZONE', 'UTC')
+TIME_ZONE = config('TIME_ZONE', 'America/Recife')
 
 USE_I18N = True
+if bool(config('DJANGO_DEBUG')):
+    USE_L10N = False
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
