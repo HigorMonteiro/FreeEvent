@@ -63,3 +63,12 @@ def test_update_event_status():
     assert event.status == 'PUBLISHED'
     assert event.status != EventStatus.PUBLISHED.value
     assert event.status != 'publicado'
+
+
+@pytest.mark.django_db
+def test_event_participants():
+    participant = baker.make('core.Participant', username='test')
+    event = baker.make('core.Event', participants=[participant])
+
+    assert event.participants.last() == participant
+    assert event.participants.last().username == participant.username

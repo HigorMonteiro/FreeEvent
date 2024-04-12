@@ -1,6 +1,10 @@
 import re
 
-from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, UserManager
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    PermissionsMixin,
+    UserManager,
+)
 from django.core import validators
 from django.db import models
 

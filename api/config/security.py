@@ -29,5 +29,6 @@ CSRF_TRUSTED_ORIGINS = [
 CORS_ALLOW_ALL_ORIGINS = bool(config('CORS_ALLOW_ALL_ORIGINS', 'False'))
 CORS_ALLOW_CREDENTIALS = bool(config('CORS_ALLOW_CREDENTIALS', 'False'))
 CORS_ALLOWED_ORIGINS = config(
-    'CORS_ALLOWED_ORIGINS', 'http://localhost',
+    'CORS_ALLOWED_ORIGINS',
+    'http://localhost',
 ).split(',')

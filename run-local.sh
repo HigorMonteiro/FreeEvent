@@ -1,5 +1,7 @@
 while true; do
-    python manage.py runserver
+    python manage.py migrate --settings=api.config.settings_test
+    # python manage.py collectstatic --settings=api.config.settings_test
+    python manage.py runserver --settings=api.config.settings_test
 
     # Check the exit status of the command
     if [ $? -eq 0 ]; then

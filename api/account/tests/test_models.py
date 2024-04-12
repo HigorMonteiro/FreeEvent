@@ -13,7 +13,10 @@ def test_user_creation():
     name = 'Test User'
 
     user = User.objects.create_user(
-        username=username, email=email, password=password, name=name,
+        username=username,
+        email=email,
+        password=password,
+        name=name,
     )
 
     assert user.username == username

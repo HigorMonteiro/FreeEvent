@@ -1,12 +1,16 @@
+import logging
 import uuid
 from enum import Enum
 
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from api.account.models import User
 from api.tasks.app import notify_participants_async
+
+
+logger = logging.getLogger('api.core.models')
 
 
 class CoreModel(models.Model):
@@ -86,6 +90,25 @@ class Event(CoreModel):
         return self.title
 
 
-@receiver(post_save, sender=Event)
-def trigger_notify_participants(sender, instance, **kwargs):
-    notify_participants_async.delay(str(instance.id))
+@receiver(pre_save, sender=Event)
+def send_notification_if_changed(sender, instance, **kwargs):
+    if instance.pk:
+        try:
+            old_event = Event.objects.get(pk=instance.pk)
+            if old_event.status == EventStatus.CANCELED.name:
+                return
+            if (
+                instance.date != old_event.date
+                or instance.time != old_event.time
+            ):
+                notify_participants_async.delay(
+                    str(instance.id),
+                    instance.date,
+                    instance.time,
+                    str(instance.address),
+                )
+            if instance.status == EventStatus.CANCELED.name:
+                notify_participants_async.delay(str(instance.id))
+            logger.info('Notification sent to participants')
+        except Event.DoesNotExist:
+            pass

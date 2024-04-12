@@ -38,6 +38,7 @@ services:
       - collectstatic
       - redis
       - rabbitmq
+      - smtp4dev
     restart: always
     volumes:
       - .:/application
@@ -79,6 +80,8 @@ services:
     <<: *common
     image: redis:latest
     restart: unless-stopped
+    ports:
+      - "${REDIS_PORT}:6379"
     volumes:
       - redis-data:/data
 
@@ -124,6 +127,16 @@ services:
     volumes:
       - .:/application
 
+  smtp4dev:
+    <<: *common
+    image: rnwood/smtp4dev:v3
+    ports:
+      - "3000:80"
+      - "2525:25"
+    restart: always
+    volumes:
+      - smtp4dev-data:/var/smtp4dev
+
 networks:
   main:
     ipam:
@@ -134,3 +147,4 @@ volumes:
   pgbouncer-data:
   redis-data:
   rabbitmq-data:
+  smtp4dev-data:

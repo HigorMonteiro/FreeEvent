@@ -9,18 +9,10 @@ class EventAdmin(admin.ModelAdmin):
         'title',
         'date',
         'status',
-        'location',
-        'participants_count',
     ]
     search_fields = ['title']
     list_filter = ['title', 'status']
     list_per_page = 50
-
-    def location(self, obj):
-        return obj.address.street
-
-    def participants_count(self, obj):
-        return int(obj.participants.count())
 
 
 @admin.register(Participant)
@@ -42,18 +34,6 @@ class ParticipantAdmin(admin.ModelAdmin):
         'last_login',
         'date_joined',
     ]
-
-    def username(self, obj):
-        return obj.user.username
-
-    def email(self, obj):
-        return obj.user.email
-
-    def is_active(self, obj):
-        return obj.user.is_active
-
-    def is_staff(self, obj):
-        return obj.user.is_staff
 
 
 @admin.register(Address)

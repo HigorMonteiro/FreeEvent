@@ -33,8 +33,8 @@ createsuperuser:
 	python manage.py createsuperuser --email "" --username admin
 
 # Tests, linters & formatters
-fmt:
-	make -k ruff-fmt black
+iosrt:
+	python -m isort .
 
 lint:
 	make -k ruff black-check mypy
