@@ -6,7 +6,7 @@ from .models import Event, Participant
 class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participant
-        fields = '__all__'
+        fields = 'username', 'email', 'phone', 'address'
 
 
 class EventSerializer(serializers.ModelSerializer):
