@@ -6,7 +6,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.shortcuts import redirect
-from django.urls import path
+from django.urls import include, path
 from drf_spectacular import views
 from drf_spectacular.utils import extend_schema
 
@@ -39,6 +39,7 @@ urlpatterns = [
     *_swagger_urlpatterns,
     path('', lambda _request: redirect('docs/'), name='home'),
     path('admin/', admin.site.urls),
+    path('', include('api.core.urls')),
 ]
 
 urlpatterns += static(

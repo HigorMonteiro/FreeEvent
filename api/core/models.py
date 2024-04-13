@@ -1,30 +1,16 @@
 import logging
-import uuid
-from enum import Enum
 
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 
 from api.account.models import User
+from api.common.model import CoreModel
+from api.common.utils import EventStatus
 from api.tasks.app import notify_participants_async
 
 
 logger = logging.getLogger('api.core.models')
-
-
-class CoreModel(models.Model):
-    id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        unique=True,
-    )
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
 
 
 class Address(CoreModel):
@@ -60,21 +46,13 @@ class Participant(User, CoreModel):
         return self.username
 
 
-class EventStatus(Enum):
-    DRAFT = 'rascunho'
-    PUBLISHED = 'publicado'
-    FILED = 'arquivado'
-    CANCELED = 'cancelado'
-    CONCLUDED = 'finalizado'
-
-
 class Event(CoreModel):
     title = models.CharField(max_length=255)
     description = models.TextField()
     date = models.DateField()
     time = models.TimeField()
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    participants = models.ManyToManyField(Participant, related_name='events')
+    participants = models.ManyToManyField(Participant, related_name='events', blank=True)
     status = models.CharField(
         max_length=20,
         choices=[(status.name, status.value) for status in EventStatus],

@@ -2,7 +2,7 @@ import pytest
 from django.contrib.auth import get_user_model
 from model_bakery import baker
 
-from api.core.models import EventStatus
+from api.common.utils import EventStatus
 
 
 User = get_user_model()
@@ -41,14 +41,10 @@ def test_event_creation():
 def test_event_status_choices():
     assert EventStatus.DRAFT.name == 'DRAFT'
     assert EventStatus.PUBLISHED.name == 'PUBLISHED'
-    assert EventStatus.FILED.name == 'FILED'
     assert EventStatus.CANCELED.name == 'CANCELED'
-    assert EventStatus.CONCLUDED.name == 'CONCLUDED'
     assert EventStatus.DRAFT.value == 'rascunho'
     assert EventStatus.PUBLISHED.value == 'publicado'
-    assert EventStatus.FILED.value == 'arquivado'
     assert EventStatus.CANCELED.value == 'cancelado'
-    assert EventStatus.CONCLUDED.value == 'finalizado'
 
 
 @pytest.mark.django_db
