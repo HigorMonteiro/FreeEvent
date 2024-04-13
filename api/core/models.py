@@ -3,6 +3,7 @@ import logging
 from django.db import models
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.utils.crypto import get_random_string
 
 from api.account.models import User
 from api.common.model import CoreModel
@@ -40,6 +41,10 @@ class Participant(User, CoreModel):
     def save(self, *args, **kwargs):
         self.is_active = True
         self.is_staff = False
+        if not self.password:
+            random_password = get_random_string(length=8)
+            self.password = random_password
+            self.set_password(self.password)
         super().save(*args, **kwargs)
 
     def __str__(self):
@@ -89,4 +94,17 @@ def send_notification_if_changed(sender, instance, **kwargs):
                 notify_participants_async.delay(str(instance.id))
             logger.info('Notification sent to participants')
         except Event.DoesNotExist:
+            pass
+
+
+@receiver(pre_save, sender=Participant)
+def send_welcome_email(sender, instance, **kwargs):
+    print('INSTANCE', instance)
+    if instance.pk:
+        try:
+            old_participant = Participant.objects.get(pk=instance.pk)
+            if not old_participant.is_active and instance.is_active:
+                notify_participants_async.delay(str(instance.random_password), instance.email)
+                logger.info('Welcome email sent to participant')
+        except Participant.DoesNotExist:
             pass

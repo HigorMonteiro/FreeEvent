@@ -23,12 +23,13 @@ env:
   POSTGRES_EXTERNAL_PORT: 5432
   DEBUG: True
   LANGUAGE_CODE: en-us
-  TIME_ZONE: Europe/Berlin
+  TIME_ZONE: America/Fortaleza
   # valid for external use
   POSTGRES_DB: postgres
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: postgres
   DJANGO_SECRET_KEY: "aasdfsfsdfgsdf"
+  DJANGO_DEBUG: True
 
 
 jobs:
