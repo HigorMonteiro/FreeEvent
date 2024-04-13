@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import csv
+
 from celery import Celery, shared_task
 from django.core.mail import EmailMessage
 
@@ -36,3 +38,23 @@ def notify_participants_async(
         [p.email for p in event.participants.all()],
     )
     email.send()
+
+
+@shared_task
+def generate_csv_report():
+
+    from api.core.models import Event
+
+    events = Event.objects.all()
+
+    with open('report.csv', 'w', encoding='utf-8') as f:
+        writer = csv.writer(f)
+        writer.writerow(['Evento', 'Participantes'])
+        for event in events:
+            writer.writerow(
+                [
+                    event.title,
+                    ', '.join([p.email for p in event.participants.all()]),
+                ],
+            )
+    return 'report.csv'
