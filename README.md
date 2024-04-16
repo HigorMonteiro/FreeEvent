@@ -17,6 +17,7 @@ Este é um projeto Django que utiliza Celery para tarefas assíncronas. O projet
 2. Navegue até o diretório do projeto:
    ```bash
    cd FreeEvent
+   cp .env.example .env
    ```
 3. Construa e inicie os serviços usando Docker Compose:
    ```bash
